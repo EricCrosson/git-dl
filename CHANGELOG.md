@@ -1,3 +1,10 @@
+## [1.0.3](https://github.com/EricCrosson/git-dl/compare/v1.0.2...v1.0.3) (2023-01-16)
+
+
+### Bug Fixes
+
+* **docs:** add readme ([783d249](https://github.com/EricCrosson/git-dl/commit/783d249ce7c1941dc4c98984f9776536c7357d57))
+
 ## [1.0.2](https://github.com/EricCrosson/git-dl/compare/v1.0.1...v1.0.2) (2023-01-16)
 
 
