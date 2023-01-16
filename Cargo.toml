@@ -1,0 +1,27 @@
+[package]
+name = "git-dl"
+version = "0.0.0-semantic-release-managed"
+edition = "2021"
+authors = ["Eric Crosson <eric.s.crosson@utexas.edu>"]
+license = "MIT OR Apache-2.0"
+description = "Clone a git repository to a structured directory"
+readme = "README.md"
+repository = "https://github.com/EricCrosson/git-dl"
+homepage = "https://github.com/EricCrosson/git-dl"
+keywords = ["cli", "git"]
+categories = ["command-line-utilities"]
+exclude = [
+  "/.envrc",
+  "/.github",
+  "/flake.{lock,nix}"
+]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+clap = { version = "=4.1.1", features = ["cargo", "derive", "env", "wrap_help"] }
+
+[profile.release]
+lto = true
+codegen-units = 1
+strip = true
