@@ -75,7 +75,7 @@ dependencies = [
 
 [[package]]
 name = "git-dl"
-version = "0.0.0-semantic-release-managed"
+version = "1.0.4"
 dependencies = [
  "clap",
 ]

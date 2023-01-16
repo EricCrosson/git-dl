@@ -1,3 +1,10 @@
+## [1.0.4](https://github.com/EricCrosson/git-dl/compare/v1.0.3...v1.0.4) (2023-01-16)
+
+
+### Bug Fixes
+
+* force release to populate version number in cargo manifest ([35193af](https://github.com/EricCrosson/git-dl/commit/35193af01af3dc3d55556df94df0bdd6f9cfe2bd))
+
 ## [1.0.3](https://github.com/EricCrosson/git-dl/compare/v1.0.2...v1.0.3) (2023-01-16)
 
 
