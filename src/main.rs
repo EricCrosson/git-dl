@@ -19,7 +19,7 @@ struct Cli {
     /// Repository to clone
     repo: Repo,
 
-    #[clap(env = "HOME")]
+    #[clap(long, env = "HOME")]
     home: PathBuf,
 }
 
