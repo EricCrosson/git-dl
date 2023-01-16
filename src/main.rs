@@ -1,6 +1,5 @@
 #![forbid(unsafe_code)]
-// TODO:
-// #![deny(warnings, missing_docs)]
+#![deny(warnings, missing_docs)]
 
 //! Clone a git repository to a structured directory.
 
@@ -19,6 +18,7 @@ struct Cli {
     /// Repository to clone
     repo: Repo,
 
+    /// Location of the user's home directory
     #[clap(long, env = "HOME")]
     home: PathBuf,
 }
