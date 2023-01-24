@@ -75,7 +75,7 @@ dependencies = [
 
 [[package]]
 name = "git-dl"
-version = "1.0.4"
+version = "1.0.5"
 dependencies = [
  "clap",
 ]
