@@ -1,3 +1,4 @@
+use serde::Deserialize;
 use std::error::Error;
 use std::fmt::Display;
 use std::path::{Path, PathBuf};
@@ -6,10 +7,21 @@ use std::str::FromStr;
 
 use crate::error::Result;
 
+#[derive(Debug, Deserialize)]
+pub(crate) struct GithubRepositoryOwner {
+    login: String,
+}
+
+#[derive(Debug, Deserialize)]
+pub(crate) struct GetRepositoryResponse {
+    name: String,
+    owner: GithubRepositoryOwner,
+}
+
 #[derive(Clone, Debug)]
 pub(crate) struct Repo {
-    owner: String,
-    repository: String,
+    pub owner: String,
+    pub repository: String,
 }
 
 impl Repo {
@@ -53,6 +65,15 @@ impl FromStr for Repo {
             });
         } else {
             return Err(format!("Unrecognized repository format: {}", s))?;
+        }
+    }
+}
+
+impl From<GetRepositoryResponse> for Repo {
+    fn from(value: GetRepositoryResponse) -> Self {
+        Self {
+            owner: value.owner.login,
+            repository: value.name,
         }
     }
 }

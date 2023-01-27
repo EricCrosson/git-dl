@@ -32,6 +32,14 @@
       # Common derivation arguments used for all builds
       commonArgs = {
         src = craneLib.cleanCargoSource ./.;
+
+        buildInputs = with pkgs; [
+          openssl
+        ];
+
+        nativeBuildInputs = with pkgs; [
+          pkg-config
+        ];
       };
 
       # Build *just* the cargo dependencies, so we can reuse
@@ -86,9 +94,12 @@
       };
       devShells = {
         default = nixpkgs.legacyPackages.${system}.mkShell {
-          nativeBuildInputs = [
-            pkgs.cargo
-          ];
+          buildInputs = commonArgs.buildInputs;
+          nativeBuildInputs =
+            commonArgs.nativeBuildInputs
+            ++ [
+              pkgs.cargo
+            ];
 
           inherit (self.checks.${system}.pre-commit-check) shellHook;
         };
