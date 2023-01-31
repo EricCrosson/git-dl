@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/EricCrosson/git-dl/compare/v1.0.7...v1.1.0) (2023-01-31)
+
+
+### Features
+
+* add --fork flag ([cf27a1e](https://github.com/EricCrosson/git-dl/commit/cf27a1e79f6e9868865db1fe93c7d2255021a399)), closes [#7](https://github.com/EricCrosson/git-dl/issues/7)
+
 ## [1.0.7](https://github.com/EricCrosson/git-dl/compare/v1.0.6...v1.0.7) (2023-01-27)
 
 
