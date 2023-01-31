@@ -7,12 +7,12 @@ use std::str::FromStr;
 
 use crate::error::Result;
 
-#[derive(Debug, Deserialize)]
+#[derive(Clone, Debug, Deserialize)]
 pub(crate) struct GithubRepositoryOwner {
-    login: String,
+    pub login: String,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Clone, Debug, Deserialize)]
 pub(crate) struct GetRepositoryResponse {
     name: String,
     owner: GithubRepositoryOwner,
@@ -21,6 +21,7 @@ pub(crate) struct GetRepositoryResponse {
 #[derive(Clone, Debug)]
 pub(crate) struct Repo {
     pub owner: String,
+    // TODO: rename this to `name`
     pub repository: String,
 }
 
