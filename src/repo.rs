@@ -21,15 +21,12 @@ pub(crate) struct GetRepositoryResponse {
 #[derive(Clone, Debug)]
 pub(crate) struct Repo {
     pub owner: String,
-    // TODO: rename this to `name`
-    pub repository: String,
+    pub name: String,
 }
 
 impl Repo {
     pub(crate) fn directory(&self, home: &Path) -> PathBuf {
-        home.join("workspace")
-            .join(&self.owner)
-            .join(&self.repository)
+        home.join("workspace").join(&self.owner).join(&self.name)
     }
 
     pub(crate) fn clone(&self, home: &Path) -> Result<()> {
@@ -45,7 +42,7 @@ impl Repo {
 
 impl Display for Repo {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "git@github.com:{}/{}.git", self.owner, self.repository)
+        write!(f, "git@github.com:{}/{}.git", self.owner, self.name)
     }
 }
 
@@ -62,7 +59,7 @@ impl FromStr for Repo {
         if let Some((owner, repository)) = pattern {
             return Ok(Self {
                 owner: owner.to_owned(),
-                repository: repository.to_owned(),
+                name: repository.to_owned(),
             });
         } else {
             return Err(format!("Unrecognized repository format: {}", s))?;
@@ -74,7 +71,7 @@ impl From<GetRepositoryResponse> for Repo {
     fn from(value: GetRepositoryResponse) -> Self {
         Self {
             owner: value.owner.login,
-            repository: value.name,
+            name: value.name,
         }
     }
 }
@@ -88,7 +85,7 @@ mod tests {
     fn check(input: &str, expected_owner: &str, expected_repository: &str) {
         let actual = Repo::from_str(input).unwrap();
         assert_eq!(expected_owner, actual.owner);
-        assert_eq!(expected_repository, actual.repository);
+        assert_eq!(expected_repository, actual.name);
     }
 
     #[test]

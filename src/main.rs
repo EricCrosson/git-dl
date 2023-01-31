@@ -60,7 +60,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     let response: GetRepositoryResponse = http_client
         .get(format!(
             "https://api.github.com/repos/{}/{}",
-            repo.owner, repo.repository
+            repo.owner, repo.name
         ))
         .header("User-Agent", USER_AGENT)
         .header("Accept", "application/vnd.github+json")
@@ -81,13 +81,13 @@ fn main() -> Result<(), Box<dyn Error>> {
         let response: CreateForkResponse = http_client
             .post(format!(
                 "https://api.github.com/repos/{}/{}/forks",
-                repo.owner, repo.repository
+                repo.owner, repo.name
             ))
             .header("User-Agent", USER_AGENT)
             .header("Accept", "application/vnd.github+json")
             .header("Authorization", format!("token {}", github_token))
             .json(&CreateForkRequest {
-                name: repo.repository.clone(),
+                name: repo.name.clone(),
                 default_branch_only: true,
             })
             .send()?
