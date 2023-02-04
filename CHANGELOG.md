@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/EricCrosson/git-dl/compare/v1.1.0...v1.1.1) (2023-02-04)
+
+
+### Bug Fixes
+
+* invoke git remote in newly-cloned repository directory ([1ae2353](https://github.com/EricCrosson/git-dl/commit/1ae23534226a4ea1f549b1ab99d1519fb01c747c))
+
 # [1.1.0](https://github.com/EricCrosson/git-dl/compare/v1.0.7...v1.1.0) (2023-01-31)
 
 
