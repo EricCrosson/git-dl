@@ -76,33 +76,39 @@ fn main() -> Result<(), Box<dyn Error>> {
         return Ok(());
     }
 
-    if fork {
-        // Create the fork (which GitHub handles asynchronously)
-        let response: CreateForkResponse = http_client
-            .post(format!(
-                "https://api.github.com/repos/{}/{}/forks",
-                repo.owner, repo.name
-            ))
-            .header("User-Agent", USER_AGENT)
-            .header("Accept", "application/vnd.github+json")
-            .header("Authorization", format!("token {}", github_token))
-            .json(&CreateForkRequest {
-                name: repo.name.clone(),
-                default_branch_only: true,
-            })
-            .send()?
-            .json()?;
-
-        // Add the remote to the cloned repository
-        Command::new("git")
-            .arg("remote")
-            .arg("add")
-            .arg("fork")
-            .arg(format!(
-                "git@github.com:{}/{}.git",
-                response.owner.login, response.name
-            ));
+    if !fork {
+        return repo.clone(&home);
     }
 
-    repo.clone(&home)
+    // Create the fork (which GitHub handles asynchronously)
+    let create_fork_response: CreateForkResponse = http_client
+        .post(format!(
+            "https://api.github.com/repos/{}/{}/forks",
+            repo.owner, repo.name
+        ))
+        .header("User-Agent", USER_AGENT)
+        .header("Accept", "application/vnd.github+json")
+        .header("Authorization", format!("token {}", github_token))
+        .json(&CreateForkRequest {
+            name: repo.name.clone(),
+            default_branch_only: true,
+        })
+        .send()?
+        .json()?;
+
+    repo.clone(&home)?;
+
+    // Add the remote to the cloned repository
+    Command::new("git")
+        .arg("remote")
+        .arg("add")
+        .arg("fork")
+        .arg(format!(
+            "git@github.com:{}/{}.git",
+            create_fork_response.owner.login, create_fork_response.name
+        ))
+        .current_dir(&directory)
+        .status()?;
+
+    Ok(())
 }

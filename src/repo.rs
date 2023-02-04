@@ -14,8 +14,8 @@ pub(crate) struct GithubRepositoryOwner {
 
 #[derive(Clone, Debug, Deserialize)]
 pub(crate) struct GetRepositoryResponse {
-    name: String,
-    owner: GithubRepositoryOwner,
+    pub name: String,
+    pub owner: GithubRepositoryOwner,
 }
 
 #[derive(Clone, Debug)]
