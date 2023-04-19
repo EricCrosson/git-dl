@@ -249,7 +249,7 @@ dependencies = [
 
 [[package]]
 name = "git-dl"
-version = "1.1.21"
+version = "1.1.22"
 dependencies = [
  "clap",
  "reqwest",
