@@ -37,9 +37,13 @@
           openssl
         ];
 
-        nativeBuildInputs = with pkgs; [
-          pkg-config
-        ];
+        nativeBuildInputs = with pkgs;
+          [
+            pkg-config
+          ]
+          ++ pkgs.lib.optionals pkgs.stdenv.isDarwin [
+            pkgs.libiconv
+          ];
       };
 
       # Build *just* the cargo dependencies, so we can reuse
