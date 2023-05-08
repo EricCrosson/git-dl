@@ -14,7 +14,7 @@ mod repo;
 
 use crate::repo::{GetRepositoryResponse, Repo};
 
-const USER_AGENT: &'static str = "EricCrosson/git-dl";
+const USER_AGENT: &str = "EricCrosson/git-dl";
 
 #[derive(Clone, Debug, Serialize)]
 struct CreateForkRequest {

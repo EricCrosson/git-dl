@@ -57,12 +57,12 @@ impl FromStr for Repo {
             .replace(".git", "");
         let pattern = shortened.split_once('/');
         if let Some((owner, repository)) = pattern {
-            return Ok(Self {
+            Ok(Self {
                 owner: owner.to_owned(),
                 name: repository.to_owned(),
-            });
+            })
         } else {
-            return Err(format!("Unrecognized repository format: {}", s))?;
+            Err(format!("Unrecognized repository format: {}", s))?
         }
     }
 }
