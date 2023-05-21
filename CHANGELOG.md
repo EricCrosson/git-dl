@@ -1,3 +1,10 @@
+## [1.1.29](https://github.com/EricCrosson/git-dl/compare/v1.1.28...v1.1.29) (2023-05-21)
+
+
+### Bug Fixes
+
+* format error-chain in error messages ([2ab2fc0](https://github.com/EricCrosson/git-dl/commit/2ab2fc0bd0b221bd3551a4098add1af0f98eb17e))
+
 ## [1.1.28](https://github.com/EricCrosson/git-dl/compare/v1.1.27...v1.1.28) (2023-05-11)
 
 
