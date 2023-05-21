@@ -1,11 +1,10 @@
 use serde::Deserialize;
 use std::error::Error;
 use std::fmt::Display;
+use std::io;
 use std::path::{Path, PathBuf};
 use std::process::Command;
 use std::str::FromStr;
-
-use crate::error::Result;
 
 #[derive(Clone, Debug, Deserialize)]
 pub(crate) struct GithubRepositoryOwner {
@@ -24,12 +23,48 @@ pub(crate) struct Repo {
     pub name: String,
 }
 
+#[derive(Debug)]
+#[non_exhaustive]
+pub struct CloneError {
+    kind: CloneErrorKind,
+}
+
+impl Display for CloneError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match &self.kind {
+            CloneErrorKind::Exec(_) => write!(f, "unable to clone repository"),
+        }
+    }
+}
+
+impl Error for CloneError {
+    fn source(&self) -> Option<&(dyn Error + 'static)> {
+        match &self.kind {
+            CloneErrorKind::Exec(err) => Some(err),
+        }
+    }
+}
+
+#[derive(Debug)]
+pub enum CloneErrorKind {
+    #[non_exhaustive]
+    Exec(io::Error),
+}
+
+impl From<io::Error> for CloneError {
+    fn from(err: io::Error) -> Self {
+        Self {
+            kind: CloneErrorKind::Exec(err),
+        }
+    }
+}
+
 impl Repo {
     pub(crate) fn directory(&self, home: &Path) -> PathBuf {
         home.join("workspace").join(&self.owner).join(&self.name)
     }
 
-    pub(crate) fn clone(&self, home: &Path) -> Result<()> {
+    pub(crate) fn clone(&self, home: &Path) -> Result<(), CloneError> {
         let target_directory = self.directory(home);
         Command::new("git")
             .arg("clone")

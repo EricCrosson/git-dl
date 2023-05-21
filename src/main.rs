@@ -3,13 +3,13 @@
 
 //! Clone a git repository to a structured directory.
 
-use std::{error::Error, path::PathBuf, process::Command};
+use std::{path::PathBuf, process::Command};
 
 use clap::Parser;
 use repo::GithubRepositoryOwner;
 use serde::{Deserialize, Serialize};
 
-mod error;
+mod little_anyhow;
 mod repo;
 
 use crate::repo::{GetRepositoryResponse, Repo};
@@ -47,7 +47,7 @@ struct Cli {
     home: PathBuf,
 }
 
-fn main() -> Result<(), Box<dyn Error>> {
+fn main() -> Result<(), little_anyhow::Error> {
     let Cli {
         repo,
         fork,
@@ -77,7 +77,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     }
 
     if !fork {
-        return repo.clone(&home);
+        return Ok(repo.clone(&home)?);
     }
 
     // Create the fork (which GitHub handles asynchronously)
