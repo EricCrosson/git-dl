@@ -1,3 +1,10 @@
+## [1.1.83](https://github.com/EricCrosson/git-dl/compare/v1.1.82...v1.1.83) (2023-11-07)
+
+
+### Bug Fixes
+
+* **deps:** update rust crate serde to v1.0.192 ([c53525b](https://github.com/EricCrosson/git-dl/commit/c53525b9a90cfffd674835ce1c0c9d1f92f32d63))
+
 ## [1.1.82](https://github.com/EricCrosson/git-dl/compare/v1.1.81...v1.1.82) (2023-10-26)
 
 
