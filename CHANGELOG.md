@@ -1,3 +1,10 @@
+## [1.1.100](https://github.com/EricCrosson/git-dl/compare/v1.1.99...v1.1.100) (2024-02-17)
+
+
+### Bug Fixes
+
+* **deps:** update rust crate clap to v4.5.1 ([0cb969e](https://github.com/EricCrosson/git-dl/commit/0cb969e1ff88ea631b840fd2411053011abed3e3))
+
 ## [1.1.99](https://github.com/EricCrosson/git-dl/compare/v1.1.98...v1.1.99) (2024-02-09)
 
 
