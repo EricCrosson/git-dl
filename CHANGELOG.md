@@ -1,3 +1,10 @@
+## [1.1.111](https://github.com/EricCrosson/git-dl/compare/v1.1.110...v1.1.111) (2024-04-06)
+
+
+### Bug Fixes
+
+* **deps:** update rust crate reqwest to v0.12.3 ([7743ae6](https://github.com/EricCrosson/git-dl/commit/7743ae6e95600a7e4401aebe5b5db406e12af985))
+
 ## [1.1.110](https://github.com/EricCrosson/git-dl/compare/v1.1.109...v1.1.110) (2024-03-26)
 
 
