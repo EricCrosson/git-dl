@@ -21,7 +21,7 @@ exclude = [
 [dependencies]
 clap = { version = "=4.5.16", features = ["cargo", "derive", "env", "wrap_help"] }
 reqwest = { version = "=0.12.7", default-features = false, features = ["blocking", "rustls-tls", "json"] }
-serde = { version = "=1.0.208", features = ["derive"] }
+serde = { version = "=1.0.209", features = ["derive"] }
 
 [profile.release]
 lto = true
