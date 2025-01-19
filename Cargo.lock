@@ -296,6 +296,7 @@ dependencies = [
  "clap",
  "reqwest",
  "serde",
+ "serde_json",
 ]
 
 [[package]]
@@ -903,11 +904,12 @@ dependencies = [
 
 [[package]]
 name = "serde_json"
-version = "1.0.91"
+version = "1.0.136"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "877c235533714907a8c2464236f5c4b2a17262ef1bd71f38f35ea592c8da6883"
+checksum = "336a0c23cf42a38d9eaa7cd22c7040d04e1228a19a933890805ffd00a16437d2"
 dependencies = [
  "itoa",
+ "memchr",
  "ryu",
  "serde",
 ]

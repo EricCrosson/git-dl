@@ -57,7 +57,7 @@ fn main() -> Result<(), little_anyhow::Error> {
 
     // Consult the GitHub API for the repository's proper capitalization
     let http_client = reqwest::blocking::Client::new();
-    let response: GetRepositoryResponse = http_client
+    let response = http_client
         .get(format!(
             "https://api.github.com/repos/{}/{}",
             repo.owner, repo.name
@@ -65,8 +65,14 @@ fn main() -> Result<(), little_anyhow::Error> {
         .header("User-Agent", USER_AGENT)
         .header("Accept", "application/vnd.github+json")
         .header("Authorization", format!("token {}", github_token))
-        .send()?
-        .json()?;
+        .send()?;
+
+    let raw_response = response.text()?;
+    let response: GetRepositoryResponse =
+        serde_json::from_str(&raw_response).map_err(|e| GithubApiError {
+            message: e.to_string(),
+            raw_response,
+        })?;
 
     let repo: Repo = response.into();
 
@@ -81,7 +87,7 @@ fn main() -> Result<(), little_anyhow::Error> {
     }
 
     // Create the fork (which GitHub handles asynchronously)
-    let create_fork_response: CreateForkResponse = http_client
+    let response = http_client
         .post(format!(
             "https://api.github.com/repos/{}/{}/forks",
             repo.owner, repo.name
@@ -93,8 +99,14 @@ fn main() -> Result<(), little_anyhow::Error> {
             name: repo.name.clone(),
             default_branch_only: true,
         })
-        .send()?
-        .json()?;
+        .send()?;
+
+    let raw_response = response.text()?;
+    let create_fork_response: CreateForkResponse =
+        serde_json::from_str(&raw_response).map_err(|e| GithubApiError {
+            message: e.to_string(),
+            raw_response,
+        })?;
 
     repo.clone(&home)?;
 
@@ -111,4 +123,26 @@ fn main() -> Result<(), little_anyhow::Error> {
         .status()?;
 
     Ok(())
+}
+
+#[derive(Debug)]
+struct GithubApiError {
+    message: String,
+    raw_response: String,
+}
+
+impl std::fmt::Display for GithubApiError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "GitHub API error: {}\nRaw response: {}",
+            self.message, self.raw_response
+        )
+    }
+}
+
+impl std::error::Error for GithubApiError {
+    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+        None
+    }
 }
