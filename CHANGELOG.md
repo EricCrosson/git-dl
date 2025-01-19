@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/EricCrosson/git-dl/compare/v1.1.156...v1.2.0) (2025-01-19)
+
+
+### Features
+
+* improve GitHub API error handling with raw response capture ([c595797](https://github.com/EricCrosson/git-dl/commit/c595797ebb2abf733b8d7125797fd8d6dabb49a5))
+
 ## [1.1.156](https://github.com/EricCrosson/git-dl/compare/v1.1.155...v1.1.156) (2025-01-10)
 
 
