@@ -19,7 +19,7 @@ exclude = [
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-clap = { version = "=4.5.29", features = ["cargo", "derive", "env", "wrap_help"] }
+clap = { version = "=4.5.30", features = ["cargo", "derive", "env", "wrap_help"] }
 reqwest = { version = "=0.12.12", default-features = false, features = ["blocking", "rustls-tls", "json"] }
 serde = { version = "=1.0.217", features = ["derive"] }
 serde_json = { version = "=1.0.138" }
