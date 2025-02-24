@@ -1,3 +1,11 @@
+## [1.2.9](https://github.com/EricCrosson/git-dl/compare/v1.2.8...v1.2.9) (2025-02-24)
+
+
+### Bug Fixes
+
+* add git to runtime dependencies in Nix derivation ([22792ab](https://github.com/EricCrosson/git-dl/commit/22792abbb0caaccdf27af3ff24ac0113088a74af))
+* replace third-party dependencies with native functionality ([914b0c0](https://github.com/EricCrosson/git-dl/commit/914b0c05e21648143ede2bb069febb8b9f935d2a))
+
 ## [1.2.8](https://github.com/EricCrosson/git-dl/compare/v1.2.7...v1.2.8) (2025-02-20)
 
 
