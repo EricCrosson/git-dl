@@ -1,21 +1,11 @@
-use serde::Deserialize;
+use crate::github_interface::GetRepositoryResponse;
+pub mod error;
+use error::ParseError;
 use std::error::Error;
 use std::fmt::Display;
 use std::io;
 use std::path::{Path, PathBuf};
-use std::process::Command;
 use std::str::FromStr;
-
-#[derive(Clone, Debug, Deserialize)]
-pub(crate) struct GithubRepositoryOwner {
-    pub login: String,
-}
-
-#[derive(Clone, Debug, Deserialize)]
-pub(crate) struct GetRepositoryResponse {
-    pub name: String,
-    pub owner: GithubRepositoryOwner,
-}
 
 #[derive(Clone, Debug)]
 pub(crate) struct Repo {
@@ -63,16 +53,6 @@ impl Repo {
     pub(crate) fn directory(&self, home: &Path) -> PathBuf {
         home.join("workspace").join(&self.owner).join(&self.name)
     }
-
-    pub(crate) fn clone(&self, home: &Path) -> Result<(), CloneError> {
-        let target_directory = self.directory(home);
-        Command::new("git")
-            .arg("clone")
-            .arg(self.to_string())
-            .arg(target_directory)
-            .status()?;
-        Ok(())
-    }
 }
 
 impl Display for Repo {
@@ -82,7 +62,7 @@ impl Display for Repo {
 }
 
 impl FromStr for Repo {
-    type Err = Box<dyn Error + Send + Sync + 'static>;
+    type Err = ParseError;
 
     fn from_str(s: &str) -> std::result::Result<Self, Self::Err> {
         let shortened = s
@@ -97,12 +77,12 @@ impl FromStr for Repo {
                 name: repository.to_owned(),
             })
         } else {
-            Err(format!("Unrecognized repository format: {}", s))?
+            Err(ParseError::invalid_format(s))
         }
     }
 }
 
-impl From<GetRepositoryResponse> for Repo {
+impl From<crate::github_interface::GetRepositoryResponse> for Repo {
     fn from(value: GetRepositoryResponse) -> Self {
         Self {
             owner: value.owner.login,
