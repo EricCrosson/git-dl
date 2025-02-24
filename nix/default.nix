@@ -10,7 +10,7 @@
     src = craneLib.cleanCargoSource ../.;
 
     buildInputs = with pkgs; [
-      openssl
+      curl
       git
     ];
 

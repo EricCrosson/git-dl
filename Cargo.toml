@@ -16,9 +16,6 @@ exclude = [
   "/flake.{lock,nix}"
 ]
 
-[dependencies]
-native-tls = "=0.2.14"
-
 [profile.release]
 lto = true
 codegen-units = 1

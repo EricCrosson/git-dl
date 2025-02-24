@@ -1,10 +1,7 @@
-use native_tls::TlsConnector;
-use std::io::{Read, Write};
-use std::net::TcpStream;
-
 use crate::github_interface::{
     error::GithubError, CreateForkResponse, FromResponse, GetRepositoryResponse, GithubClient,
 };
+use std::process::Command;
 
 const USER_AGENT: &str = "EricCrosson/git-dl";
 
@@ -23,50 +20,39 @@ impl NativeGithubClient {
         path: &str,
         body: Option<&str>,
     ) -> Result<String, GithubError> {
-        let connector = TlsConnector::new().map_err(GithubError::request_failed)?;
-        let stream =
-            TcpStream::connect("api.github.com:443").map_err(GithubError::request_failed)?;
-        let mut stream = connector
-            .connect("api.github.com", stream)
-            .map_err(GithubError::request_failed)?;
+        let url = format!("https://api.github.com{}", path);
+        let mut cmd = Command::new("curl");
 
-        let content_length = body.map(|b| b.len()).unwrap_or(0);
-        let request = format!(
-            "{} {} HTTP/1.1\r\n\
-             Host: api.github.com\r\n\
-             User-Agent: {}\r\n\
-             Accept: application/vnd.github+json\r\n\
-             Authorization: token {}\r\n\
-             Content-Length: {}\r\n\
-             Connection: close\r\n\
-             \r\n\
-             {}",
-            method,
-            path,
-            USER_AGENT,
-            self.token,
-            content_length,
-            body.unwrap_or("")
-        );
+        cmd.arg("--silent")
+            .arg("--show-error")
+            .arg("--request")
+            .arg(method)
+            .arg("--header")
+            .arg(format!("User-Agent: {}", USER_AGENT))
+            .arg("--header")
+            .arg("Accept: application/vnd.github+json")
+            .arg("--header")
+            .arg(format!("Authorization: token {}", self.token));
 
-        stream
-            .write_all(request.as_bytes())
-            .map_err(GithubError::request_failed)?;
-
-        let mut response = String::new();
-        stream
-            .read_to_string(&mut response)
-            .map_err(GithubError::invalid_response)?;
-
-        // Extract response body (after double CRLF)
-        if let Some(idx) = response.find("\r\n\r\n") {
-            Ok(response[idx + 4..].to_string())
-        } else {
-            Err(GithubError::invalid_response(std::io::Error::new(
-                std::io::ErrorKind::InvalidData,
-                "malformed response",
-            )))
+        if let Some(body_content) = body {
+            cmd.arg("--header")
+                .arg("Content-Type: application/json")
+                .arg("--data")
+                .arg(body_content);
         }
+
+        cmd.arg(url);
+
+        let output = cmd.output().map_err(GithubError::request_failed)?;
+
+        if !output.status.success() {
+            return Err(GithubError::request_failed(std::io::Error::new(
+                std::io::ErrorKind::Other,
+                String::from_utf8_lossy(&output.stderr).to_string(),
+            )));
+        }
+
+        String::from_utf8(output.stdout).map_err(|e| GithubError::invalid_response(e))
     }
 }
 
