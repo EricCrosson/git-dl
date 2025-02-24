@@ -32,6 +32,15 @@
           alejandra.enable = true;
           prettier.enable = true;
           rustfmt.enable = true;
+
+          cargo-deny-check = {
+            enable = true;
+            name = "cargo-deny check";
+            entry = "cargo deny check";
+            files = "^Cargo\\.(toml|lock)$";
+            pass_filenames = false;
+            language = "system";
+          };
         };
       };
     in {
@@ -48,6 +57,7 @@
       default = nixpkgs.legacyPackages.${system}.mkShell {
         nativeBuildInputs = with nixpkgs.legacyPackages.${system}; [
           cargo
+          cargo-deny
           clippy
           rust-analyzer
           rustc

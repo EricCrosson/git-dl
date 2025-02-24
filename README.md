@@ -4,6 +4,7 @@
 There are many like it[^1][^2], but this one is mine.
 
 [^1]: https://github.com/wezm/git-grab
+
 [^2]: https://github.com/jmcgarr/git-grab
 
 ## Why?
