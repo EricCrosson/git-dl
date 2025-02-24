@@ -11,6 +11,7 @@
 
     buildInputs = with pkgs; [
       openssl
+      git
     ];
 
     nativeBuildInputs = with pkgs;
