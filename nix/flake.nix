@@ -4,8 +4,8 @@
     crane = {
       url = "github:ipetkov/crane";
     };
-    pre-commit-hooks = {
-      url = "github:cachix/pre-commit-hooks.nix";
+    git-hooks = {
+      url = "github:cachix/git-hooks.nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -14,7 +14,7 @@
     self,
     nixpkgs,
     crane,
-    pre-commit-hooks,
+    git-hooks,
   }: let
     forEachSystem = nixpkgs.lib.genAttrs [
       "aarch64-darwin"
@@ -25,7 +25,7 @@
   in {
     checks = forEachSystem (system: let
       craneDerivations = nixpkgs.legacyPackages.${system}.callPackage ./default.nix {inherit crane;};
-      pre-commit-check = pre-commit-hooks.lib.${system}.run {
+      pre-commit-check = git-hooks.lib.${system}.run {
         src = ../.;
         hooks = {
           actionlint.enable = true;
