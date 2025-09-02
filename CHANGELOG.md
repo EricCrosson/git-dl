@@ -1,3 +1,10 @@
+## [1.2.10](https://github.com/EricCrosson/git-dl/compare/v1.2.9...v1.2.10) (2025-09-02)
+
+
+### Bug Fixes
+
+* remove unused code ([58aefcd](https://github.com/EricCrosson/git-dl/commit/58aefcda5bfb1495a5da1a2ce78a1f5f04dfe109))
+
 ## [1.2.9](https://github.com/EricCrosson/git-dl/compare/v1.2.8...v1.2.9) (2025-02-24)
 
 
