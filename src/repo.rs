@@ -1,9 +1,7 @@
 use crate::github_interface::GetRepositoryResponse;
 pub mod error;
 use error::ParseError;
-use std::error::Error;
 use std::fmt::Display;
-use std::io;
 use std::path::{Path, PathBuf};
 use std::str::FromStr;
 
@@ -11,42 +9,6 @@ use std::str::FromStr;
 pub(crate) struct Repo {
     pub owner: String,
     pub name: String,
-}
-
-#[derive(Debug)]
-#[non_exhaustive]
-pub struct CloneError {
-    kind: CloneErrorKind,
-}
-
-impl Display for CloneError {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match &self.kind {
-            CloneErrorKind::Exec(_) => write!(f, "unable to clone repository"),
-        }
-    }
-}
-
-impl Error for CloneError {
-    fn source(&self) -> Option<&(dyn Error + 'static)> {
-        match &self.kind {
-            CloneErrorKind::Exec(err) => Some(err),
-        }
-    }
-}
-
-#[derive(Debug)]
-pub enum CloneErrorKind {
-    #[non_exhaustive]
-    Exec(io::Error),
-}
-
-impl From<io::Error> for CloneError {
-    fn from(err: io::Error) -> Self {
-        Self {
-            kind: CloneErrorKind::Exec(err),
-        }
-    }
 }
 
 impl Repo {
