@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/EricCrosson/git-dl/compare/v1.2.10...v1.3.0) (2026-03-16)
+
+
+### Features
+
+* use fenix for Rust toolchain management ([3c2c60d](https://github.com/EricCrosson/git-dl/commit/3c2c60dcc69e958b02bb6998e3fc15415bfa13f9))
+
 ## [1.2.10](https://github.com/EricCrosson/git-dl/compare/v1.2.9...v1.2.10) (2025-09-02)
 
 
