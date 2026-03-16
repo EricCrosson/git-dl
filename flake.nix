@@ -1,4 +1,7 @@
 {
+  nixConfig.extra-substituters = ["https://ericcrosson-git-dl.cachix.org"];
+  nixConfig.extra-trusted-public-keys = ["ericcrosson-git-dl.cachix.org-1:qhFI0OIKhtlyEQeKRnyfXryIiDkk/p8R77xfjiOfntM="];
+
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs";
     crane = {

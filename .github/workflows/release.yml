@@ -19,3 +19,23 @@ jobs:
       disable-semantic-release-cargo: true
     secrets:
       cargo-registry-token: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+
+  cachix:
+    needs: release
+    strategy:
+      matrix:
+        os: [macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+
+      - uses: DeterminateSystems/nix-installer-action@main
+
+      - uses: cachix/cachix-action@v15
+        with:
+          name: ericcrosson-git-dl
+          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+
+      - run: nix build
