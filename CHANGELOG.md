@@ -1,3 +1,10 @@
+## [1.3.1](https://github.com/EricCrosson/git-dl/compare/v1.3.0...v1.3.1) (2026-03-16)
+
+
+### Bug Fixes
+
+* **ci:** explicitly push binary to cachix after nix build ([e2b0080](https://github.com/EricCrosson/git-dl/commit/e2b0080418aafa3e56a0dc3d8b30659601c1ce04))
+
 # [1.3.0](https://github.com/EricCrosson/git-dl/compare/v1.2.10...v1.3.0) (2026-03-16)
 
 
