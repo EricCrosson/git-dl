@@ -8,6 +8,7 @@ mod git_interface;
 mod github_interface;
 mod little_anyhow;
 mod repo;
+mod token;
 
 use cli::Args;
 use git_interface::{git::SystemGit, GitOperations};
@@ -21,6 +22,11 @@ fn main() -> Result<(), little_anyhow::Error> {
         github_token,
         home,
     } = Args::parse()?;
+
+    let github_token = match github_token {
+        Some(t) => t,
+        None => token::resolve_token_from_gh_cli("github.com")?,
+    };
 
     let github = NativeGithubClient::new(github_token);
     let git = SystemGit::new();
