@@ -17,6 +17,7 @@ Arguments:
 Options:
       --fork                         Create a fork of the target repository
       --github-token <GITHUB_TOKEN>  GitHub API token with `repo` permissions [env: GITHUB_TOKEN]
+                                     Falls back to `gh auth token` if not set
       --home <HOME>                  Location of the user's home directory [env: HOME]
   -h, --help                         Print help
   -V, --version                      Print version
@@ -28,8 +29,14 @@ const VERSION: &str = env!("CARGO_PKG_VERSION");
 pub struct Args {
     pub repo: Repo,
     pub fork: bool,
-    pub github_token: String,
+    pub github_token: Option<String>,
     pub home: PathBuf,
+}
+
+fn token_from_args(args: &[String]) -> Option<String> {
+    args.windows(2)
+        .find(|w| w[0] == "--github-token" && !w[1].starts_with('-'))
+        .map(|w| w[1].clone())
 }
 
 impl Args {
@@ -71,9 +78,7 @@ impl Args {
             .map_err(|e| error::CliError::env_var_not_found(e))?
             .into();
 
-        // Get GITHUB_TOKEN from environment
-        let github_token =
-            env::var("GITHUB_TOKEN").map_err(|e| error::CliError::env_var_not_found(e))?;
+        let github_token = token_from_args(&args).or_else(|| env::var("GITHUB_TOKEN").ok());
 
         Ok(Args {
             repo,
@@ -91,7 +96,7 @@ mod tests {
             Ok(Self {
                 repo: repo_str.parse()?,
                 fork,
-                github_token: "test-token".to_string(),
+                github_token: Some("test-token".to_string()),
                 home: PathBuf::from("/home/test"),
             })
         }
@@ -104,7 +109,7 @@ mod tests {
         assert_eq!(args.repo.owner, "owner");
         assert_eq!(args.repo.name, "repo");
         assert!(!args.fork);
-        assert_eq!(args.github_token, "test-token");
+        assert_eq!(args.github_token, Some("test-token".to_string()));
         assert_eq!(args.home, PathBuf::from("/home/test"));
     }
 
@@ -119,5 +124,33 @@ mod tests {
     #[test]
     fn test_missing_repo() {
         assert!(Args::test_new("", false).is_err());
+    }
+
+    fn strs(v: &[&str]) -> Vec<String> {
+        v.iter().map(|s| s.to_string()).collect()
+    }
+
+    #[test]
+    fn token_from_args_returns_explicit_flag_value() {
+        let args = strs(&["git-dl", "owner/repo", "--github-token", "ghp_abc123"]);
+        assert_eq!(token_from_args(&args), Some("ghp_abc123".to_string()));
+    }
+
+    #[test]
+    fn token_from_args_returns_none_when_flag_absent() {
+        let args = strs(&["git-dl", "owner/repo"]);
+        assert_eq!(token_from_args(&args), None);
+    }
+
+    #[test]
+    fn token_from_args_returns_none_when_flag_at_end_with_no_value() {
+        let args = strs(&["git-dl", "owner/repo", "--github-token"]);
+        assert_eq!(token_from_args(&args), None);
+    }
+
+    #[test]
+    fn token_from_args_rejects_flag_as_token_value() {
+        let args = strs(&["git-dl", "owner/repo", "--github-token", "--fork"]);
+        assert_eq!(token_from_args(&args), None);
     }
 }
