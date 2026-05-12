@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/EricCrosson/git-dl/compare/v1.3.1...v1.4.0) (2026-05-12)
+
+
+### Features
+
+* fall back to gh auth token when no explicit token is provided ([1cd9570](https://github.com/EricCrosson/git-dl/commit/1cd9570e6565982d45253517c4f76ef23c9e6c31))
+
 # [1.4.0-beta.1](https://github.com/EricCrosson/git-dl/compare/v1.3.1...v1.4.0-beta.1) (2026-05-12)
 
 
